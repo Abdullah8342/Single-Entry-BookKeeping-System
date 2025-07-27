@@ -4,6 +4,7 @@
 The Single Entry Bookkeeping System is a simple command-line application designed to help users manage their personal finances by tracking income and expenses. This system allows users to record transactions, view their financial records, and generate summary reports.
 
 ## Features
+- Check Balance
 - Add income transactions
 - Add expense transactions
 - View all recorded transactions
@@ -43,6 +44,7 @@ The Single Entry Bookkeeping System is a simple command-line application designe
 ## Example Interaction
 
 Welcome to the Single Entry Bookkeeping System!
+0. Check Balance
 1. Add Income
 2. Add Expense
 3. View Transactions
