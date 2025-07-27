@@ -1,18 +1,18 @@
-from Transaction import Transaction
+from Transaction import AddExpense,AddIncome
 
 class Bookkeeping:
     ''' Single Book Keeping Transaction '''
     def __init__(self):
         self.transactions = []
 
-    def add_income(self, amount, description, date):
+    def add_income(self, amount, date):
         ''' Adding Income in the Account '''
-        transaction = Transaction(amount, 'INCOME (IC)', description, date)
+        transaction = AddIncome(amount, 'INCOME (IC)', date)
         self.transactions.append(transaction)
 
-    def add_expense(self, amount, description, date):
+    def add_expense(self, amount, category, date):
         ''' Expense '''
-        transaction = Transaction(amount, 'EXPENSE (EXP)', description, date)
+        transaction = AddExpense(amount, 'EXPENSE (EXP)', category, date)
         self.transactions.append(transaction)
 
     def view_transactions(self):
@@ -29,17 +29,29 @@ class Bookkeeping:
 
     def save_to_file(self, filename):
         ''' Saving Records into the File for Latter Use '''
-        with open(filename, 'w') as file:
+        with open(filename, 'w',encoding='utf-8') as file:
             for transaction in self.transactions:
-                file.write(f"{transaction.date},{transaction.transaction_type},{transaction.amount},{transaction.description}\n")
+                if transaction.transaction_type == 'INCOME (IC)':
+                    file.write(f'{transaction.date},{transaction.transaction_type},{transaction.amount}\n')
+                elif transaction.transaction_type == 'EXPENSE (EXP)':
+                    file.write(f"{transaction.date},{transaction.transaction_type},{transaction.amount},{transaction.category}\n")
 
     def load_from_file(self, filename):
         ''' Loarding Data back from the Files '''
         try:
-            with open(filename, 'r') as file:
+            with open(filename, 'r',encoding='utf-8') as file:
                 for line in file:
-                    date, transaction_type, amount, description = line.strip().split(',')
-                    amount = float(amount)
-                    self.transactions.append(Transaction(amount, transaction_type, description, date))
+                    try:
+                        date, transaction_type, amount = line.strip().split(',')
+                        amount = float(amount)
+                        self.transactions.append(AddIncome(amount, transaction_type,date))
+                    except:
+                        date, transaction_type, amount, category = line.strip().split(',')
+                        amount = float(amount)
+                        self.transactions.append(AddExpense(amount, transaction_type, category,date))
         except FileNotFoundError:
             print("\nFile not found. Starting with an empty transaction list.")
+
+    def CheckBalance(self):
+        total_income,total_expense,net_balance = self.get_summary()
+        return net_balance
