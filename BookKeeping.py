@@ -22,8 +22,8 @@ class Bookkeeping:
 
     def get_summary(self):
         ''' Account Summary '''
-        total_income = sum(t.amount for t in self.transactions if t.transaction_type == 'income')
-        total_expenses = sum(t.amount for t in self.transactions if t.transaction_type == 'expense')
+        total_income = sum(t.amount for t in self.transactions if t.transaction_type == 'INCOME (IC)')
+        total_expenses = sum(t.amount for t in self.transactions if t.transaction_type == 'EXPENSE (EXP)')
         net_balance = total_income - total_expenses
         return total_income, total_expenses, net_balance
 
